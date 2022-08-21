@@ -11,8 +11,12 @@ const getemp = new mongoose.Schema({
 		min:15,
 		max:100
 	},
-	status:String,
-	company:String
+	status:{
+		type:String,
+		enum:["active","deactive","terminate","performance issue"]
+	},
+	company:String,
+	identity:Number
 
 })
 
@@ -20,42 +24,40 @@ const getprivatedata = new mongoose.Schema({
 	salary:{
 		type:Number,
 		default:20000
+	},
+	email:{
+		type:String,
+		trim:true,
+		lowercase:true,
+		required:true,
+		unique:true,
+		match:[/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	}
 })
 
 
-const loginschema = new mongoose.Schema({
+const loginregisterschema = new mongoose.Schema({
 	email:{
 		type:String,
 		trim:true,
 		lowercase:true,
 		required:true,
-		match:[/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-	},
-	password:String
-})
-
-const registerschema = new mongoose.Schema({
-	email:{
-		type:String,
-		trim:true,
-		lowercase:true,
-		required:true,
+		unique:true,
 		match:[/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	},
 	password:String,
-	name:String
+	name:String,
+	token:String
 })
+
 
 
 const getdatamodel = mongoose.model('Empdata',getemp)
 const getprivatemodel = mongoose.model('PrivateEnp',getprivatedata)
-const registermodel = mongoose.model('register',registerschema)
-const loginmodel = mongoose.model('login',loginschema)
+const loginregistermodel = mongoose.model('login',loginregisterschema)
 
 module.exports = {
 	getprivatemodel,
 	getdatamodel,
-	registermodel,
-	loginmodel
+	loginregistermodel
 }
