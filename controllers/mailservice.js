@@ -34,6 +34,8 @@ const postmail = async(req,res)=>{
       + 'to send this email. yooooooooooo man'
 };
 
+console.log("for dummy branch")
+
 transporter.sendMail(mailConfigurations, function(error, info){
     if (error){
     	return res.status(401).json({Error:error})
